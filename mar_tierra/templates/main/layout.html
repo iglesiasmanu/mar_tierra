@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mar&Tierra{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic|Source+Code+Pro:500">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- DynamicTable -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+
+     <!-- Calendar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+  <body>
+
+    <!-- DynamicTable -->
+
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='layout1.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='navBar.css') }}"/>
+
+    {% block additional_css %}{% endblock %}
+
+  <!-- Sidebar -->
+  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+    <div class="position-sticky">
+      <div class="list-group list-group-flush mx-3 mt-4">
+
+
+      {% if current_user.is_authenticated %}
+          <a href="{{ url_for('main.home') }}" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
+                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Home</span>
+          </a>
+
+          <a href="{{ url_for('users.account') }}" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Account</span>
+          </a>
+
+          <a href="#" target="_blank" class="list-group-item list-group-item-action py-2 ripple ac ">
+                  <i class="fas fa-chart-area fa-fw me-3"></i><span>New Home</span>
+          </a>
+
+            {% if current_user.role == "admin" %}
+              <a href="{{ url_for('admins.index') }}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-pie fa-fw me-3"></i><span>Admin Console</span>
+              </a>
+
+            {% endif %}
+
+          <a href="{{ url_for('users.logout') }}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-pie fa-fw me-3"></i><span>Log Out</span>
+          </a>
+
+
+
+    {% else %}
+
+        <a href="{{ url_for('users.registration') }}" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-chart-line fa-fw me-3"></i><span>Register</span>
+        </a>
+
+        <a href="{{ url_for('users.login') }}" class="list-group-item list-group-item-action py-2 ripple">
+          <i class="fas fa-chart-pie fa-fw me-3"></i><span>Log In</span>
+        </a>
+
+      {% endif %}
+
+
+      </div>
+    </div>
+  </nav>
+  <!-- Sidebar -->
+
+  <!-- Navbar -->
+  <div class="fixed-top">
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <a href="{{ url_for('main.home') }}">
+                <h5 class="text-white h4">Mar y Tierra</h5>
+            </a>
+          <span class="text-muted">Home</span>
+        </div>
+      </div>
+      <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </div>
+  <!-- Navbar -->
+
+          <div class="fixed-top">
+                <div class="col-md-10">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                </div>
+            </div>
+
+
+<div class="main_content">
+    {% block main_content %}
+
+
+
+    {% endblock %}
+
+    {% block additional %}{% endblock %}
+</div>
+
+<footer>
+
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+
+<!-- Dynamic Tables -->
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+
+{% block additional_js %}{% endblock %}

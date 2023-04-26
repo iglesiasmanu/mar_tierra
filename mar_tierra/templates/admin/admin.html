@@ -1,0 +1,94 @@
+{% extends 'main/layout.html' %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+<div class="hero">
+
+    <d>Huarpe's Construction & Design</d>
+    <br /><br />
+    <p style="font-size: small">Live in luxury without breaking the bank: rich country-style living</p>
+
+</div>
+
+
+    {% if current_user.is_authenticated %}
+
+            <div class="row">
+                <div class="col-md-3"></div>
+
+                    <div class="card text-center" style="width: 25rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Users Details</h5>
+                        <p class="card-text">Check on User Details and Roles | Current Users: {% if user_count %} {{ user_count }} {% endif %} </p>
+                        <a href="{{ url_for('admins.user_roles') }}" class="btn btn-primary">Go to Users </a>
+                      </div>
+                    </div>
+
+                      <div class="card text-center" style="width: 45rem;">
+                      <div class="card-body">
+                        <h5 class="card-title"><strong>Project Stats</strong></h5>
+                         {% if cost_by_category %}
+                            <table>
+
+                                <tbody>
+                                    {% for category, cost in cost_by_category %}
+                                        <tr>
+                                            <td><small>{{ category }}</small></td>
+                                            <td>: <small>{{ cost }}</small></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+
+
+                      </div>
+
+                </div>
+
+            <div class="row">
+             <div class="col-md-2"></div>
+
+                <div class="col-md-10">
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="data" class="table table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Project Request | Status</th>
+                                <th scope="col">Author | Status</th>
+                                <th scope="col">Actions</th>
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                {% for i in homes %}
+                                    <td scope="col">
+                                        <a href="{{ url_for('homes.home_detail', id=i.id) }}">
+                                            {{ i.name}} | {{ i.status }}
+                                        </a>
+                                    </td>
+                                    <td scope="col">{{ i.author }} | <strong>{{ i.status }}</strong></td>
+
+                                    <td scope="col">
+                                        <a href="{{ url_for('projects.project_detail', id=i.id) }}" class="btn btn-dark">Project </a>
+                                    </td>
+                            </tr>
+                            </tbody>
+                             {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+   </div>
+
+
+{% endblock main_content %}

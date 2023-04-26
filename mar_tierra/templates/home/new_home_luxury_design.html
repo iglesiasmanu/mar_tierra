@@ -1,0 +1,91 @@
+{% extends 'main/layout.html' %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    <div class="hero">
+        <d>Huarpe's Construction & Design
+        <p><strong>Luxury Design for: </strong><br> {{ current_user }}<strong>{{ homes_items.name }}</strong></p></d>
+        <br />{% if current_user.is_authenticated %}
+
+        <div class="col-md-1"></div>
+            <p style="font-size: medium; alignment: right">
+                Our more minimalist design are the best for quick turn around. Keep working on your project
+                by adding any detail, or create your own petite hotel with multiple homes.
+            </p>
+    </div>
+
+                <br/>
+
+            <div class="row">
+                <div class="col-md-3"></div>
+
+                <div class="card text-bg-dark" style="width: 55rem;">
+                     <img src="{{ url_for('static', filename='photos/luxury_homes_plans/luxury_home_plans.png') }}" style="width: 55rem; height: 25rem;">
+
+                </div>
+
+                <div class="card text-bg-dark" style="width: 35rem;">
+                  <img src="{{ url_for('static', filename='photos/luxury_homes_plans/luxuryConcept.png') }}" style="width: 30rem; height: 25rem;">
+
+                </div>
+            </div>
+        <br>
+
+         <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-9">
+                    {% if homes_items %}
+                     <!-- Add Table Here -->
+                            <table id="data" class="table table">
+                            <thead>
+                            <tr>
+
+                                <th scope="col">Project Name | Status <small>(click on for Invoice Details)</small></th>
+                                <th scope="col">Target Budget </th>
+                                <th scope="col">Target Date</th>
+
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            {% for i in homes_items %}
+
+                                <td scope="col"><a href="{{ url_for('homes.home_detail', id=i.id) }}">{{ i.name }} | {{ i.status }}</a></td>
+                                 <td scope="col">${{ i.desired_budget }} <small>USD</small> | {{ i.type }}</td>
+
+                                   <td scope="col">{{ i.target_date }} |
+                                       {% if i.consumption_rate is not none %}
+                                           <span style="color:{% if p.consumption_rate > 80 %}red{% else %}green{% endif %}">
+                                               <strong>{{ '%.1f' % i.consumption_rate }}%</strong>
+                                           </span>{% else %}
+                                           <em>N/A</em>
+                                       {% endif %}
+                                   </td>
+
+
+                                    <td scope="col"> <a class="btn btn-secondary btn-sm m-1" href="#">Edit Project</a> </td>
+                                <td scope="col"></td>
+
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                        </table>
+
+
+                        {% endif %}
+
+            {% endif %}
+
+             </div>
+
+
+        </div>
+    </div>
+
+{% endblock main_content %}
+

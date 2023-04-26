@@ -1,0 +1,99 @@
+{% extends 'main/layout.html' %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+
+{% endblock %}
+
+{% block main_content %}
+<div class="hero"> <d>Devices@IBM Singapore StoreRoom </d></div>
+
+        <div class="container">
+
+
+    <div class="container">
+    {% if current_user.is_authenticated %}
+         {% if current_user.role == "admin" %}
+
+             <div class="row">
+
+                <div class="col-md-3"></div>
+                    <div class="card text-center" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Users Details</h5>
+                        <p class="card-text">Get back and Review pendings and links </p>
+                        <a href="{{ url_for('admins.index') }}" class="btn btn-dark">Back to Console </a>
+                      </div>
+                    </div>
+
+                    <div class="card text-center" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Dashboard</h5>
+                        <p class="card-text">Connect to our Dashboard for Details and Reports</p>
+                        <a href="https://dataplatform.cloud.ibm.com/projects/89a33355-ff3b-4eaf-a4d9-36d094df4738/assets?context=cpdaas" class="btn btn-primary">Go to Dashboard </a>
+                      </div>
+                    </div>
+
+                     <div class="card text-center" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Appointments</h5>
+                        <p class="card-text">Review all Appointments and Manage</p>
+                        <a href="{{ url_for('admins.all_appointments') }}" class="btn btn-primary">All Appointments </a>
+                      </div>
+                    </div>
+
+
+                </div>
+
+
+        <div class="row">
+             <div class="col-md-2"></div>
+
+            <div class="col-md-10">
+                <legend class="">Detalles de Usuario | Total Users: {% if user_count %} {{ user_count }} {% endif %}</legend>
+                    <div class="table-responsive">
+                        <table id="data" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">mail</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">View</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for u in user %}
+                                <td scope="col"> {{ u.email }}</td>
+                                <td scope="col"> {{ u.role }} </td>
+
+                                {% if u.role == "user" %}
+                                    <td scope="col"> <a class="btn btn-warning btn-sm m-1" href="{{ url_for('admins.update_user_role_admin', id=u.id) }}">Change to Admin</a> </td>
+                                {% else %}
+                                    <td scope="col"> <a class="btn btn-warning btn-sm m-1" href="{{ url_for('admins.update_user_role_user', id=u.id) }}">Change back to User</a> </td>
+                                {% endif %}
+
+                                <td scope="col"> <a class="" href="{{ url_for('users.user', id=u.id) }}">View</a> </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        </div>
+
+    {% endif %}
+     {% endif %}
+</div>
+<div class="col-md-0">
+</div>
+
+{% endblock main_content %}

@@ -1,0 +1,136 @@
+{% extends 'main/layout.html' %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+   <div class="hero"> <d>Devices@IBM Singapore StoreRoom </d></div>
+
+        <div class="container">
+
+    <div class="container">
+    {% if current_user.is_authenticated %}
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card" style="width: 16rem;">
+              <div class="card-header"> Administrador </div>
+              <ul class="list-group list-group-flush">
+                  <item class="list-group-item">
+                    <p><small>Payed Spent Payed: {% if payed_ordered %} ${{ "{0:.1f}".format(payed_ordered) }} {% endif %}</small></p>
+                    <p><small>Users Spent Ordered: {% if revenue_ordered %} ${{ "{0:.1f}".format(revenue_ordered) }} {% endif %}</small></p>
+                    <p><small>Users Spent Pending: {% if revenue_pending %} ${{ "{0:.1f}".format(revenue_pending) }} {% endif %}</small></p>
+                  </item>
+                <a class="list-group-item" href="{{ url_for('admins.index') }}">Back to Dashboard </a>
+                <a class="list-group-item" href="{{ url_for('categories.table_categories') }}">Categorias</a>
+                <a class="list-group-item" href="{{ url_for('homes.table_products') }}">Productos</a>
+              </ul>
+
+            </div>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="content-section-admin-user">
+
+                    <legend class="border-bottom mb-2">Todos los Pedidos</legend>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-condensed table-striped" id="Cart">
+                            <thead>
+                            <tr>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Diseño</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in items_all_status %}
+                                <td scope="col"><a href="{{ url_for('admins.user_account', id=i.userid) }}"> {{ i.author.fname }}</a></td>
+                                <td scope="col"> {{ i.product_name }}</td>
+                                <td scope="col"> {{ i.quantity }} </td>
+                                <td scope="col">  $ {{ "{0:.1f}".format((i.price)*(i.quantity)) }}</td>
+
+                                <td class="status">
+
+                                            <div class="left-box">
+                                                <div class="big-circle circle">
+                                                    <div class="circle-content">
+
+                                                        {% if i.status == "pending" %} Pendiente de Ordenar {% endif %}
+                                                    {% if i.order_date %} Ordenado:
+                                                        {{i.order_date.strftime('%m-%d')}} {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="right-box">
+                                                <div class="circle one">
+                                                    <div class="circle-content">
+                                                     {% if i.status == "Payed" %} Entrega Pendiente {% endif %}
+                                                    {% if i.status == "Ordered" %} Pago Pendiente {% endif %}
+                                                    <p>{% if i.delivery_date %} Enviado: {{i.delivery_date.strftime('%m-%d')}} {% endif %}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="right-box">
+                                                <div class="circle purple two">
+                                                    <div class="circle-content"></div>
+                                                    <div class="circle-content">
+                                                        <p>{% if i.received_date %} Recibido: {{i.received_date.strftime('%m-%d')}} {% endif %}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                <td scope="col"> <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Borrar</button></td>
+                           <!-- Modal -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                 <div class="modal-dialog" role="document">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <h5 class="modal-title" id="deleteModalLabel">Borrar Item?</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                 <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+
+                                         <div class="modal-footer">
+                                             <button type="button" class="btn btn-success" data-dismiss="modal">No Borrar</button>
+
+                                             <form action="{{ url_for('admins.delete_item', item_id = i.itemid) }}" method="POST">
+                                                 <input class="btn btn-danger" type="submit" value="Borrar">
+                                             </form>
+                                         </div>
+                                     </div>
+                                 </div>
+                           </div>
+
+                                <td scope="col"> <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('admins.delivery_detail', itemid=i.itemid) }}">Detalle</a> </td>
+
+
+
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+            </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+{% endblock main_content %}

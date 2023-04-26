@@ -1,0 +1,145 @@
+{% extends "main/layout.html" %}
+
+{% block additional_css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    {% if current_user.is_authenticated %}
+    <div class="hero">
+    <div class="col-sm-1"></div>
+        <d>Huarpe's Construction & Design</d>
+        <small>Project Item</small>
+        <br />
+        <br>
+        <div class="col-sm-1"></div>
+
+             <p style="font-size: large">
+                {{ current_user.email }} Add the project items we need to complete this house
+            </p>
+        </div>
+
+         <div class="row">
+                <div class="col-md-3"></div>
+
+                    <div class="card text-center" style="width: 25rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Project Actions</h5>
+
+                        <a href="{{ url_for('projects.new_item_to_admin_project', home_item=home_item.id) }}"class="btn btn-primary">Add Project Items</a>
+                      </div>
+                    </div>
+
+                    <div class="card text-center" style="width: 25rem;">
+                      <div class="card-body">
+                        <h5 class="card-title"><strong>Project Stats</strong></h5>
+                          <p><small>Current Cost Estimate: <strong>{{ total_cost_estimate|float|int|round }}</strong></small></p>
+                          <p><small>Current Actual Cost: <strong>{{ actual_cost|float|int|round }}</strong></small></p>
+
+                      </div>
+                    </div>
+
+                     <div class="card text-center" style="width: 25rem;">
+                      <div class="card-body">
+                        <h5 class="card-title"><strong>Category Cost Estimate</strong></h5>
+                         {% if cost_by_category %}
+                            <table>
+
+                                <tbody>
+                                    {% for category, cost in cost_by_category %}
+                                        <tr>
+                                            <td><strong>{{ category }}</strong></td>
+                                            <td><small>: {{ cost|float|int|round }}</small></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+
+
+                      </div>
+                    </div>
+
+                     <div class="card text-center" style="width: 25rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Admin</h5>
+                           <a href="{{ url_for('admins.index') }}" class="btn btn-dark">Back to Console</a>
+                          <hr>
+
+
+                      </div>
+                    </div>
+
+                </div>
+
+        <hr>
+
+         <div class="col-sm-2"></div>
+
+
+        <div class="col-md-2">
+
+                <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-dark"><strong>Project Name:</strong>
+                        <br>{{ home.name }}</button>
+                    <button type="button" class="list-group-item list-group-item-action"><strong>Desired Budget: </strong>
+                        <br>{{ home.desired_budget }}</button>
+                    <button type="button" class="list-group-item list-group-item-action"><strong>Target Date:</strong>
+                        <br>{{ home.target_date }}</button>
+                </div>
+
+
+            </div>
+
+             <div class="col-md-8">
+
+
+                      <div class="table-responsive">
+                         <table id="data" class="table table">
+                          <thead>
+                            <tr>
+                                <th scope="col">Category: Action</th>
+                                <th scope="col">Provider</th>
+                                <th scope="col">Target Date</th>
+                                <th scope="col">Estimate | Actual</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+                            </thead>
+
+
+                            {% for i in project_items %}
+
+                                <td scope="col"><strong>{{ i.category }}</strong> <small> {{ i.action }} </small></td>
+                                <td scope="col">{{ i.provider }}</td>
+                                <td scope="col">{{ i.target_date }}</td>
+
+                                <td scope="col">
+                                {{ i.cost_estimate|float|int|round }} |
+                                <strong>
+                                  {% if i.actual_cost < i.cost_estimate|round %}
+                                    <span style="color: green">{{ i.actual_cost|float|int|round }}</span>
+                                  {% else %}
+                                    <span style="color: red">{{ i.actual_cost|float|int|round }}</span>
+                                  {% endif %}
+                                </strong>
+
+                                </td>
+                                 <td scope="col">
+                                     <a href="{{ url_for('projects.update_project_item', id=i.id) }}" class="btn btn-dark">Edit</a></td>
+                                  <td scope="col"><a href="{{ url_for('projects.delete_project_item', id=i.id) }}"><li class="btn btn-danger"><center>Delete</center></li></a>
+                                </td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+                       </table>
+                      </div>
+                     </fieldset>
+                 </form>
+             </div>
+    {% endif %}
+    </div>
+{% endblock main_content %}

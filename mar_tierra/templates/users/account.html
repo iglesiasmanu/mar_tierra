@@ -1,0 +1,86 @@
+{% extends "main/layout.html" %}
+{% block title %} Account Update {% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    {% if current_user.is_authenticated %}
+
+    <div class="hero">
+        <d>Huarpe's Construction & Design</d>
+        <br /><br />
+        <p style="font-size: small">Live in luxury without breaking the bank: rich country-style living</p>
+        <br>
+    </div>
+
+       {% if homes_count > 0 %}
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-9">
+                    <hr>
+                     <!-- Add Table Here -->
+                        <table id="data" class="table table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project Name | Status <small>(click on for Details)</small></th>
+                                <th scope="col">Target Budget | Type</th>
+                                <th scope="col">Target Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for i in homes %}
+
+                                <td scope="col"><a href="{{ url_for('homes.home_detail', id=i.id) }}">{{ i.name }} : {{ i.status }}</a></td>
+                                <td scope="col">${{ i.desired_budget|int|round }} <small>USD</small> | {{ i.type }}</td>
+                                <td scope="col">{{ i.target_date }}</td>
+
+                                <td scope="col"></td>
+
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+           <div class="row">
+               <div class="col-md-2"></div>
+               <div class="col-md-9">
+               <br>
+               <h2>Still don't have any project start right here,...</h2>
+               <small>Start a Project from Scratch</small>
+               <br>
+               <div class="card-deck">
+
+                         <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">New Designs</h5>
+                                <hr>
+                              <p class="card-text">Start your project from scratch selecting the plans, interiors, custom furniture, gardens and more...</p>
+                                <br><a href="#" class="btn btn-primary">New Design</a>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                  <h5 class="card-title">Catalog</h5>
+                                <hr>
+                              <p class="card-text">Browse our current catalog of houses, find the home of your dream, or find some inspiration</p>
+                              <br><a href="#" class="btn btn-primary">Catalog</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        {% endif %}
+    {% endif %}
+{% endblock main_content %}
+

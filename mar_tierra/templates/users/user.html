@@ -1,0 +1,42 @@
+{% extends "main/layout.html" %}
+{% block title %} Update Product {% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+
+{% block main_content %}
+
+        {% if current_user.is_authenticated %}
+            <div class="hero"> <d>Huarpe's Construction & Design</d></div>
+            <div class="row">
+                <div class="col-md-3"></div>
+            {% if current_user.role == "admin" %}
+
+                <div class="col-md-9">
+                    <div class="content-section-request">
+                       <h3>User Detail</h3>
+                        <h7><strong>email:</strong> {{ user.email}} | </h7>
+                        <h7><strong>Role: </strong>{{ user.role}} </h7>
+
+                       <div class="" ><p style="margin: 30px 0 0 0;text-align: center;padding: 0;">
+                          <span style="color: #272727;font-family: 'IBM Plex Sans','Helvetica Neue', Helvetica,Arial,Verdana,sans-serif;
+                                       font-size: 11px; mso-line-height-rule: exactly;line-height: 1.8; max-width: 600px;">
+                              <strong>{{ current_user.email }} </strong>if you are sure you want to Delete the User
+                              Please proceed to press Delete <br/>
+                              The User will be eliminated <br/>
+                          </span>
+                       </p>
+
+                    <form action="{{ url_for('users.delete_user', id=user.id) }}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Delete">
+
+
+                        <a href="{{ url_for('admins.index') }}" class="btn btn-primary"><span>Back to Admin Console</span></a>
+            {% endif %}
+                    </form>
+                </div>
+            </div>
+            </div>
+        {% endif %}
+{% endblock main_content %}

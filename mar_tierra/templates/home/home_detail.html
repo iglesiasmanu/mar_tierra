@@ -1,0 +1,126 @@
+{% extends 'main/layout.html' %}
+{% block title %} Account Update {% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    {% if current_user.is_authenticated %}
+
+    <div class="hero">
+        <d>Huarpe's Construction & Design</d>
+        <br /><br />
+        <p style="font-size: small">Live in luxury without breaking the bank: rich country-style living</p>
+        <br>
+    </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-2">
+                        <a class="btn btn-success btn-bg m-2" href="{{ url_for('products.new_product', home_item=home_item.id) }}">Add a new Product</a>
+                    </div>
+                    <div class="col-md-7">
+
+                        <small>It is often the small, intricate features that distinguish a truly luxurious and comfortable
+                            experience from an ordinary one. Add to your house any detail you want before
+                            completing your project request.
+                            </small></td>
+                        <hr>
+                    </div>
+
+                   <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                        {% if home.status == "Draft Request" %}
+                            <a class="btn btn-primary btn-bg m-2" href="{{ url_for('homes.complete_home_request', id=home_item.id) }}">Complete your request</a>
+
+                        </div>
+                <div class="col-md-7">
+
+
+                        <small>If you are ready to complete your request. Go ahead we will review your request and do
+                            the best to see if we are the perfect match to build together your dream home. </small>
+                        <hr>
+                        {% endif %}
+
+                    </div>
+
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+
+                        <div class="col-md-2">
+
+                            <div class="list-group">
+                                <button type="button" class="list-group-item list-group-item-dark"><strong>Project Name:</strong>
+                                    <br>{{ home_item.name }}</button>
+                                <button type="button" class="list-group-item list-group-item-action"><strong>Target Budget: </strong>
+                                    <br>USD {{ home_item.desired_budget }}</button>
+                                <button type="button" class="list-group-item list-group-item-action"><strong>Target Date:</strong>
+                                    <br>{{ home_item.target_date }}</button>
+
+                                 <ul class="list-group">
+
+                                     <li class="list-group-item list-group-item-dark"><strong><center>Actions</center></strong></li>
+
+                                     <a href="{{ url_for('homes.update_home', id=home.id) }}"><li class="list-group-item list-group-item-info"><center>Edit Project Details</center></li></a>
+
+                                     {% if current_user.role == "admin" %}
+                                        <a href=" {{ url_for('admins.index') }}"><li class="list-group-item list-group-item-black"><center>Admin Console</center></li></a>
+                                     {% endif %}
+
+                                    <a href="{{ url_for('homes.cancel_home_project', id=home.id) }}"><li class="list-group-item list-group-item-danger"><center>Cancel Home Project</center></li></a>
+
+
+
+                                 </ul>
+
+
+
+
+
+
+                        </div>
+
+                        </div>
+
+                            <div class="col-md-7">
+                                {% if products %}
+                                    <!-- Add Table Here -->
+                                    <table id="data" class="table table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Product Family</th>
+                                <th scope="col">Detail </th>
+                                <th scope="col">Status </th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            {% for i in products %}
+                                <td scope="col"> {{ i.name }}</td>
+                                <td scope="col"> {{ i.description }}</td>
+                                <td scope="col"> {{ i.phase }}</td>
+                                <td scope="col"> <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('products.update_product_item', id=i.id) }}">Edit Product</a> </td>
+
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                        </table>
+
+
+                        {% endif %}
+                    </div>
+
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock main_content %}
+

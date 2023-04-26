@@ -1,0 +1,95 @@
+{% extends "main/layout.html" %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design_general.css') }}">
+{% endblock %}
+
+{% block main_content %}
+
+   <div class="hero"> <d>Huarpe's Construction & Design</d>
+    <br /><br />
+    <small style="font-size: small">Live in luxury without breaking the bank:
+        rich country-style living</small>
+
+    </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+
+                <div class="col-sm-6">
+
+                         <form method="POST" action="">
+                             {{ form.hidden_tag() }}
+
+                             <fieldset class="form-group">
+                                 <p style="margin-top: 0px; margin-bottom: 18px; color: #272727; font-family: 'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,Verdana,sans-serif; font-size: 25px; mso-line-height-rule: exactly; line-height: 1.8;">
+                                    <br />LOG IN </a>
+                                 </p>
+
+                                 <div class="form-group" >
+                                    {{ form.email.label(class="form-control-label") }}
+                                    {% if form.email.errors %}
+                                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+
+                                    {% else %}
+                                        {{ form.email(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+
+
+
+                             <div class="form-group">
+                                {{ form.password.label(class="form-control-label") }}
+                                {% if form.password.errors %}
+                                    {{ form.password(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.password(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+
+
+
+
+
+                             </fieldset>
+
+
+
+                             <div class="form-group">
+
+                                {{ form.submit(class="btn btn-primary") }}
+                                 <a href="{{ url_for('main.home') }}" class="btn btn-primary">Back Home</a>
+                                 <div class="" ><p style="margin: 30px 0 0 0;text-align: center;padding: 0;">
+                                     <div class="col-md-2">
+                             </div>
+
+                                  <span style="color: #272727;font-family: 'IBM Plex Sans','Helvetica Neue', Helvetica,Arial,Verdana,sans-serif;
+                                               font-size: 11px; mso-line-height-rule: exactly;line-height: 1.8; max-width: 600px;">
+                                      Don't Have an Account? <a style="color: #0043ce; text-decoration: none; font-weight: bold;" href="{{ url_for('users.registration') }}">
+                                      Register</a><br/>
+                                      <small>Consent please not that by login in you are accepting our page to store the personal information given</small>
+                                  </span>
+                                 </p>
+                             </div>
+
+
+
+                        </div>
+
+                         </form>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+{% endblock main_content %}
